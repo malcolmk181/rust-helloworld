@@ -7,7 +7,7 @@ fn main() {
 
     let secret_number = rand::thread_rng().gen_range(1..=100); // = makes it inclusive
 
-    println!("The secret number is: {secret_number}");
+    // println!("The secret number is: {secret_number}");
 
     loop {
         println!("Please input your guess.");
@@ -19,7 +19,10 @@ fn main() {
             .expect("Failed to read line"); // expect will be called if return value of above is Err
             // will get a compile warning without an expect / error handling!!!! so cool!
 
-        let guess: u32 = guess.trim().parse().expect("Please type a number!"); // trim gets rid of all whitespace
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue, // _ catches all error values. continue goes to next iteration of loop
+        }; // trim gets rid of all whitespace
         // this is "shadowing" guess. primarily used for converting between types
         // in this case from String -> u32 (unsigned 32 bit int)
 
